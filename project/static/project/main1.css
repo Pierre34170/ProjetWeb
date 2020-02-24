@@ -1,0 +1,53 @@
+body {
+	background-image: url("./home-image2.jpg");
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+}
+
+.welcome{
+	margin-bottom: 2em;
+	text-align: center;
+	font-family: sans-serif;
+ 	font-size: xx-large;
+
+}
+
+.home-image {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    margin-top: 2em;
+
+}
+
+
+.content-section {
+	background: #DC7633 ;
+	opacity: 1;
+	margin-right: 150px;
+	margin-left: 150px;
+	padding: 10px 20px;
+	border : 1px solid #34495E;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+
+
+}
+
+footer {
+	position: absolute;
+	bottom: 0; 
+	left: 0; 
+	right: 0;
+	background: #2C3E50;
+	text-align: center;
+}
+
+.button-match{
+	margin-top: 20px;
+}

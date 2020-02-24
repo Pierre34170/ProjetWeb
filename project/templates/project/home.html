@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Home</title>
-</head>
-<body>
-	<h1>Mon premier projet!</h1>
-</body>
-</html>
+{% extends "project/base.html" %}
+{% block content %}
+
+{% if user.is_authenticated %}
+	<div class="button-match">
+		<button type="button" class="btn btn-secondary btn-lg btn-block">Propose a Match</button>
+
+	</div>
+{% endif %}
+	
+{% endblock content %}
+

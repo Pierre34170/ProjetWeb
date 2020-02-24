@@ -5,4 +5,4 @@ def home(request):
 	return render(request, 'project/home.html')
 
 def about(request):
-	return HttpResponse()
+	return render(request, 'project/about.html', {'title': 'About'})
