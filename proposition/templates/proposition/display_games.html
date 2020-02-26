@@ -1,0 +1,17 @@
+{% extends "project/base.html" %}
+{% block content %}
+
+{% for proposition in propositions %}
+<article class="media content-section">
+	<div class="media-body">
+		<div class="article-metadata">
+			<a class="mr-2" href="#">{{ proposition.author }}</a>
+			<small class="text-muted">{{ proposition.date_posted }}</small>
+		</div>
+		<h2><a class="article-title" href="#">{{ proposition.title }}</a></h2>
+		<p class="article-content">{{ proposition.date_match }}</p>
+	</div>
+</article>
+{% endfor %}
+
+{% endblock content %}

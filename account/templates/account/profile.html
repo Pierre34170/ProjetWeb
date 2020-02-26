@@ -1,0 +1,52 @@
+{% extends "project/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<div class="profile-section">
+		<div class="media">
+			<img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+			<div class="media-body">
+				<h2 class="account-heading">{{ user.username }}</h2>
+				<p class="text-secondary">{{ user.email }}</p>
+			</div>
+		</div>	
+		<form method="POST">
+			{% csrf_token %}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Profile Info</legend>
+				{{ a_form|crispy }}
+			</fieldset>
+			<div class="form-group">
+				<button class="btn btn-outline-info" type="submit">Save Changes</button>
+			</div>
+		</form>
+
+
+
+		<!-- 
+		<p>Heloo, {{ request.user.username }}</p>
+		{% for field in account_form %}
+			<p>
+
+				{{field.label_tag}}
+				{{field}}
+
+				{% if field.help_text %}
+					{{field.help_text}}
+				{% endif %}
+			</p>
+		{% endfor %}
+
+		{% for field in account_form %}
+			{% for error in field.errors %}
+				{{error}}
+			{% endfor %}
+		{% endfor %}
+
+		{% if account_form.non_field_errors %}
+			<p> {{account_form.non_field_errors}} </p>
+		{% endif %}
+
+		<button type="submit">Save changes</button>
+	-->
+	</div>
+{% endblock content %}

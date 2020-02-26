@@ -3,7 +3,7 @@
 
 {% if user.is_authenticated %}
 	<div class="button-match">
-		<button type="button" class="btn btn-secondary btn-lg btn-block">Propose a Match</button>
+		<a href="{% url 'organize' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Propose a Game</button>
 
 	</div>
 {% endif %}

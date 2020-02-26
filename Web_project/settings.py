@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'project.apps.ProjectConfig',
     'users.apps.UsersConfig',
+    'account.apps.AccountConfig',
+    'proposition.apps.PropositionConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,6 +71,8 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTH_USER_MODEL = 'account.Account'
 
 WSGI_APPLICATION = 'Web_project.wsgi.application'
 

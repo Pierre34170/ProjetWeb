@@ -19,13 +19,20 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from users import views as user_views
+from account import views as account_views
+from proposition import views as proposition_views
+
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', user_views.register, name='register'),
-    path('profile/', user_views.profile, name='profile'),
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('register/', account_views.registration_view, name='register'),
+    path('profile/', account_views.profile_view, name='profile'),
+    path('login/', auth_views.LoginView.as_view(template_name='account/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='account/logout.html'), name='logout'),
+    path('organize/', proposition_views.organize_view, name='organize'),
+    path('display_games', proposition_views.display_games_view, name='display_games'),
     path('', include('project.urls')),
 ]
 
