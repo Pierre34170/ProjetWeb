@@ -1,7 +1,7 @@
 from django.db import models
 from account.models import Account
 from django.utils import timezone
-
+from django.urls import reverse
 
 
 class Match(models.Model):
@@ -29,6 +29,9 @@ class Proposition(models.Model):
 
 	def __str__(self):
 		return self.title
+
+	def get_absolute_url(self):
+		return reverse('proposition_detail', kwargs={'pk': self.pk})
 
 
 class Play(models.Model):

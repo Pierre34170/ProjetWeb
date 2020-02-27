@@ -49,6 +49,8 @@ def profile_view(request):
 
 
 
+
+
 #def profile_view(request):
 #
 #	if not request.user.is_authenticated:

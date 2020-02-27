@@ -1,7 +1,14 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import OrganizeForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView
+from django.views.generic import (
+	ListView, 
+	DetailView,
+	CreateView,
+	UpdateView,
+	DeleteView
+	)
 
 from .models import Proposition
 
@@ -20,6 +27,7 @@ def organize_view(request):
 
 	context = {'form':form}
 	return render(request, 'proposition/organize.html', context)
+
 
 
 
@@ -42,3 +50,45 @@ class PropositionListView(ListView):
 
 class PropositionDetailView(DetailView):
 	model = Proposition
+
+
+
+class PropositionCreateView(LoginRequiredMixin, CreateView):
+	model = Proposition
+	fields = ['title', 'date_match', 'match']
+
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		return super().form_valid(form)
+
+
+class PropositionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+	model = Proposition
+	fields = ['title', 'date_match', 'match']
+
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		return super().form_valid(form)
+
+	def test_func(self):
+		proposition = self.get_object()
+		if self.request.user == proposition.author:
+			return True
+		return False
+
+class PropositionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	model = Proposition
+	success_url = '/'
+
+	def test_func(self):
+		proposition = self.get_object()
+		if self.request.user == proposition.author:
+			return True
+		return False
+
+
+
+
+
+
+
