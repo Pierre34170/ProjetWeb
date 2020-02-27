@@ -20,7 +20,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from users import views as user_views
 from account import views as account_views
-from proposition import views as proposition_views
 
 
 
@@ -31,8 +30,7 @@ urlpatterns = [
     path('profile/', account_views.profile_view, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='account/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='account/logout.html'), name='logout'),
-    path('organize/', proposition_views.organize_view, name='organize'),
-    path('display_games', proposition_views.display_games_view, name='display_games'),
+
     path('', include('project.urls')),
 ]
 

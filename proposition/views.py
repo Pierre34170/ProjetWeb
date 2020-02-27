@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import OrganizeForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from .models import Proposition
 
@@ -30,6 +30,15 @@ def display_games_view(request):
 		'propositions': Proposition.objects.all()
 	}
 
-	return render(request, 'proposition/organize.html', context)
+	return render(request, 'proposition/proposition_list.html', context)
 
 
+
+class PropositionListView(ListView):
+	model = Proposition
+#	temmplate_name = 'proposition/display_games.html'
+	context_object_name = 'propositions'
+	ordering = ['-date_posted']
+
+class PropositionDetailView(DetailView):
+	model = Proposition

@@ -6,9 +6,9 @@
 	<div class="media-body">
 		<div class="article-metadata">
 			<a class="mr-2" href="#">{{ proposition.author }}</a>
-			<small class="text-muted">{{ proposition.date_posted }}</small>
+			<small class="text-muted">{{ proposition.date_posted|date:"F d, Y"}}</small>
 		</div>
-		<h2><a class="article-title" href="#">{{ proposition.title }}</a></h2>
+		<h2><a class="article-title" href="{% url 'proposition_detail' proposition.id %}">{{ proposition.title }}</a></h2>
 		<p class="article-content">{{ proposition.date_match }}</p>
 	</div>
 </article>
