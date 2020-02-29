@@ -1,0 +1,20 @@
+{% extends "project/base.html" %}
+{% block content %}
+
+<article class="media content-section">
+	<div class="media-body">
+		<div class="article-metadata">
+			<a class="mr-2" href="#">{{ object.team_training }}</a>
+		</div>
+		<h2 class="article-title">{{ object.type_training }}</h2>
+		<p class="article-content">{{ object.date_training|date:"F d, Y" }}</p>
+		{% if user.is_captain %}
+		<div>
+			<a class="btn btn-primary btn-sm" href="{% url 'training_update' object.id %}" >Update</a>
+			<a class="btn btn-secondary btn-sm" href="{% url 'training_delete' object.id %}" >Delete</a>
+		</div>
+		{% endif %}
+	</div>
+</article>
+
+{% endblock content %}

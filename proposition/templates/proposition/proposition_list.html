@@ -1,6 +1,12 @@
 {% extends "project/base.html" %}
 {% block content %}
 
+<form action="" method="POST">
+	{% csrf_token %}
+	{{form}}	
+	<input type="submit" name="Submit">
+</form>
+
 {% for proposition in propositions %}
 <article class="media content-section">
 	<div class="media-body">
@@ -9,7 +15,10 @@
 			<small class="text-muted">{{ proposition.date_posted|date:"F d, Y"}}</small>
 		</div>
 		<h2><a class="article-title" href="{% url 'proposition_detail' proposition.id %}">{{ proposition.title }}</a></h2>
-		<p class="article-content">{{ proposition.date_match }}</p>
+		<div class="button-accept">
+			<button type="button" class="btn btn-primary">Accept</button>
+		</div>
+		<p class="article-content">Date of the Match : {{ proposition.date_match }}</p>
 	</div>
 </article>
 {% endfor %}

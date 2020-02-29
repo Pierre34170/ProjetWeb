@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.core.validators import MaxValueValidator
 from django.utils import timezone
+from django.urls import reverse
+
 
 class MyAccountManager(BaseUserManager):
-	def create_user(self, email, username, first_name, last_name, team, is_captain, numTel, password=None):
+	def create_user(self, email, username, first_name, last_name, is_captain, numTel, password=None):
 #			raise ValueError("Users must have an email address")
 #		if not username:
 #			raise ValueError("Users must have an username")
@@ -23,7 +24,6 @@ class MyAccountManager(BaseUserManager):
 			first_name=first_name,
 			last_name=last_name,
 			is_captain=is_captain,
-			team=team,
 			numTel=numTel,
 			)
 
@@ -31,14 +31,13 @@ class MyAccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user 
 
-	def create_superuser(self, email, username, first_name, last_name, is_captain, team, numTel, password):
+	def create_superuser(self, email, username, first_name, last_name, is_captain, numTel, password):
 		user = self.create_user(
 			email=self.normalize_email(email),
 			username=username,
 			first_name=first_name,
 			last_name=last_name,
 			is_captain=is_captain,
-			team=team,
 			numTel=numTel,
 			password=password
 			)
@@ -59,6 +58,21 @@ class Team (models.Model):
 		return self.libelle_team
 '''
 
+class Team (models.Model):
+	libelle_team = models.CharField(max_length=30, unique=True)
+#	nb_players = models.PositiveIntegerField()
+	date_creation = models.DateTimeField(verbose_name='date creation', auto_now=True)
+
+	def __str__(self):
+		return self.libelle_team
+
+	def get_absolute_url(self):
+		return reverse('home')
+'''
+class BelongTo(models.Model):
+
+'''
+
 
 class Account(AbstractBaseUser):
 	username = models.CharField(max_length=30, unique=True)
@@ -66,7 +80,7 @@ class Account(AbstractBaseUser):
 	last_name = models.CharField(max_length=30, unique=False)
 	email = models.EmailField(verbose_name="email", max_length=60, unique=True)
 	is_captain = models.BooleanField(default=False)
-	team = models.CharField(max_length=30, unique=True)
+	team = models.ForeignKey(Team, on_delete=models.CASCADE, blank=True, null=True)
 	numTel = models.CharField(max_length=10, unique=True)
 	date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
 	last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
@@ -76,7 +90,7 @@ class Account(AbstractBaseUser):
 	is_superuser = models.BooleanField(default=False)
 
 	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = ['username','first_name','last_name','is_captain', 'team', 'numTel']
+	REQUIRED_FIELDS = ['username','first_name','last_name','is_captain', 'numTel']
 
 	objects = MyAccountManager()
 

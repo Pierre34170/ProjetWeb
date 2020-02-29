@@ -2,10 +2,35 @@
 {% block content %}
 
 {% if user.is_authenticated %}
+{% if user.is_captain %}
 	<div class="button-match">
-		<a href="{% url 'proposition_create' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Propose a Game</button>
-
+		<a href="{% url 'proposition_create' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Suggest a Game</button>
 	</div>
+
+	<div class="button-match">
+		<a href="{% url 'training_create' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Suggest a training</button>
+	</div>
+{% endif %}
+<div class="see">
+	<div class= "row">
+		<div class="col">
+			<div class="card text-center" id="see-matchs">
+				<div class="card-header">See Your Matchs</div>
+				<div class="card-body">
+					<h3 class="card-title"></h3>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card text-center" id="see-trainings">
+				<div class="card-header">See Your Trainings</div>
+				<div class="card-body">
+					<h3 class="card-title"></h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {% endif %}
 	
 {% endblock content %}

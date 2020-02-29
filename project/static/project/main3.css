@@ -1,5 +1,5 @@
 body {
-	background-image: url("./home-image2.jpg");
+  background-image: url("./home-image2.jpg");
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -30,14 +30,17 @@ body {
 	margin-top: 20px;
 }
 
-
+.see {
+  margin-top: 300px;
+}
 
 #see-matchs{
-  background: #F9E79F;
+
+  background-color: #F9E79F;
 }
 
 #see-trainings{
-  background: #7DCEA0;
+  background-color: #7DCEA0;
 }
 
 .button-accept{
