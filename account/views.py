@@ -3,8 +3,11 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from .forms import RegistrationForm, AccountUpdateForm
 from django.contrib.auth.decorators import login_required
+from .decorators import unauthenticated_user
 
 
+
+@unauthenticated_user
 def registration_view(request):
 	context={}
 	if request.method == 'POST':

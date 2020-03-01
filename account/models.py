@@ -5,7 +5,7 @@ from django.urls import reverse
 
 
 class MyAccountManager(BaseUserManager):
-	def create_user(self, email, username, first_name, last_name, is_captain, numTel, password=None):
+	def create_user(self, email, username, first_name, last_name, is_captain, city, numTel, password=None):
 #			raise ValueError("Users must have an email address")
 #		if not username:
 #			raise ValueError("Users must have an username")
@@ -24,6 +24,7 @@ class MyAccountManager(BaseUserManager):
 			first_name=first_name,
 			last_name=last_name,
 			is_captain=is_captain,
+			city=city,
 			numTel=numTel,
 			)
 
@@ -31,13 +32,14 @@ class MyAccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user 
 
-	def create_superuser(self, email, username, first_name, last_name, is_captain, numTel, password):
+	def create_superuser(self, email, username, first_name, last_name, is_captain, city, numTel, password):
 		user = self.create_user(
 			email=self.normalize_email(email),
 			username=username,
 			first_name=first_name,
 			last_name=last_name,
 			is_captain=is_captain,
+			city=city,
 			numTel=numTel,
 			password=password
 			)
@@ -80,6 +82,7 @@ class Account(AbstractBaseUser):
 	last_name = models.CharField(max_length=30, unique=False)
 	email = models.EmailField(verbose_name="email", max_length=60, unique=True)
 	is_captain = models.BooleanField(default=False)
+	city = models.CharField(max_length=30)
 	team = models.ForeignKey(Team, on_delete=models.CASCADE, blank=True, null=True)
 	numTel = models.CharField(max_length=10, unique=True)
 	date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
@@ -90,7 +93,7 @@ class Account(AbstractBaseUser):
 	is_superuser = models.BooleanField(default=False)
 
 	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = ['username','first_name','last_name','is_captain', 'numTel']
+	REQUIRED_FIELDS = ['username','first_name','last_name','is_captain', 'city', 'numTel']
 
 	objects = MyAccountManager()
 

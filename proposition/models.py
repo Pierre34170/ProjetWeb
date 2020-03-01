@@ -5,16 +5,20 @@ from django.urls import reverse
 
 
 class Match(models.Model):
-	real_date = models.DateTimeField()
+	real_date = models.DateField()
+	hour_beggin = models.TimeField()
 	lieu_match = models.CharField(max_length=300)
 
 	def __str__(self):
-		return self.lieu_match
+		return (self.lieu_match)
+
+	def get_absolute_url(self):
+		return reverse('home')
 		
 
 class Training(models.Model):
-	title_training = models.CharField(max_length=30)
-	date_training = models.DateTimeField()
+	date_training = models.DateField()
+	hour_training = models.TimeField()
 	type_training = models.CharField(max_length=300)
 	team_training = models.ForeignKey(Team, on_delete=models.CASCADE)
 
@@ -31,14 +35,14 @@ class Stadium(models.Model):
 	lieu_stadium = models.CharField(max_length=300)
 
 	def __str__(self):
-		return self.libelle_stadium
+		return (self.libelle_stadium)
 
 
 class Proposition(models.Model):
 	title = models.CharField(max_length=300)
 	date_posted = models.DateTimeField(default=timezone.now)
-	date_match = models.DateTimeField()
-	match = models.ForeignKey(Match, on_delete=models.CASCADE)
+	date_match = models.DateField()
+	match = models.ForeignKey(Match, null = True, on_delete=models.CASCADE)
 	author = models.ForeignKey(Account, null = True, on_delete=models.CASCADE)
 
 	def __str__(self):

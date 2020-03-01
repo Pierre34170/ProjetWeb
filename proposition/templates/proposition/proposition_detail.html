@@ -8,13 +8,18 @@
 			<small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
 		</div>
 		<h2 class="article-title">{{ object.title }}</h2>
-		<p class="article-content">{{ object.date_match }}</p>
-		{% if object.author == user %}
+		<p class="article-content">Date du match : {{ object.date_match }}</p>
+		<p class="article-content">Adresse du match : {{ object.match }}</p>
 		<div>
+			{% if object.author == user %}
 			<a class="btn btn-primary btn-sm" href="{% url 'proposition_update' object.id %}" >Update</a>
 			<a class="btn btn-secondary btn-sm" href="{% url 'proposition_delete' object.id %}" >Delete</a>
+			{% else %}
+			<div class="button-accept">
+				<button type="button" class="btn btn-primary">Accept</button>
+			</div>
+			{% endif %}
 		</div>
-		{% endif %}
 	</div>
 </article>
 

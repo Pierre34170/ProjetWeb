@@ -1,13 +1,15 @@
 {% extends "project/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
-
-<form action="" method="POST">
-	{% csrf_token %}
-	{{form}}	
-	<input type="submit" name="Submit">
-</form>
-
+<div class="content-section">
+	<form action="" method="POST">
+		{% csrf_token %}
+		{{form|crispy}}	
+		<input type="submit" name="Submit">
+	</form>
+</div>
 {% for proposition in propositions %}
+{% if propositions %}
 <article class="media content-section">
 	<div class="media-body">
 		<div class="article-metadata">
@@ -15,12 +17,13 @@
 			<small class="text-muted">{{ proposition.date_posted|date:"F d, Y"}}</small>
 		</div>
 		<h2><a class="article-title" href="{% url 'proposition_detail' proposition.id %}">{{ proposition.title }}</a></h2>
-		<div class="button-accept">
-			<button type="button" class="btn btn-primary">Accept</button>
-		</div>
 		<p class="article-content">Date of the Match : {{ proposition.date_match }}</p>
 	</div>
 </article>
+{% else %}
+<div class="content-section">
+	<p> No Matchs</p>
+</div>
+{% endif %}
 {% endfor %}
-
 {% endblock content %}
