@@ -88,11 +88,16 @@ def JoinTeam(request, pk):
 
 
 	if request.method=='POST':
-		belongto = BelongToTeam(team=team, player=player)
-		belongto.save()
-		messages.success(request, f'Team joined !')
+		if (team.nb_players < (team.nb_players_max)):
+			team.nb_players = team.nb_players +1
+			team.save()
+			belongto = BelongToTeam(team=team, player=player)
+			belongto.save()
+			messages.success(request, f'Team joined !')
 
-		return redirect('home')
+			return redirect('home')
+		messages.success(request, f'Sorry this team is already complete')
+		return render(request,'account/join_team.html', context)
 
 	return render(request, 'account/join_team.html', context)
 
@@ -106,28 +111,34 @@ def MyTeamDetail(request, pk):
 	myplayerstab=[]
 
 	for i in myplayers:
-		myplayerstab.append(i.player)
+		myplayerstab.append(i)
 
-	players = myplayerstab
+	playerbelongtoteam = myplayerstab
 
-	context={'players':players}
+	context={'playerbelongtoteam':playerbelongtoteam}
 
 	return render(request, 'account/see_my_team.html', context)
 
+
 @login_required
 @user_passes_test(is_captain_check, login_url='home')
+def DeleteMyPlayers(request, pk):
 
 
-def DeleteMyPlayers(request, pk_player, pk_team):
-
-	player = BelongToTeam.objects.filter(player=pk_player)
-	team = player.filter(team=pk_team)
+	player = BelongToTeam.objects.get(id=pk)
+	myteam = player.team
 
 	if request.method=="POST":
-		team.delete()
-		return redirect('homr')
+		myteam.nb_players = myteam.nb_players-1
+		myteam.save() 
+		player.delete()
+		messages.success(request, f'Player deleted !')
+		return redirect('home')
 
-	context = {'team':team}
+	context = {'player':player}
+
+
+	context = {}
 	return render(request, 'account/delete_player.html',context)
 
 

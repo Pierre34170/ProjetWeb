@@ -95,6 +95,7 @@ class Account(AbstractBaseUser):
 
 class Team (models.Model):
 	libelle_team = models.CharField(max_length=30, unique=True)
+	nb_players_max = models.PositiveIntegerField(null=True)
 	nb_players = models.PositiveIntegerField(null=True)
 	date_creation = models.DateTimeField(verbose_name='date creation', auto_now=True)
 	creator = models.ForeignKey(Account, on_delete=models.CASCADE)

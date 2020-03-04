@@ -2,22 +2,22 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-{% for player in players %}
+{% for playerbelong in playerbelongtoteam %}
 <article class="media content-section">
 	<div class="media-body">
 		<div class="article-metadata">
-			<a class="mr-3" href="#">{{ player.username }}</a>
-			<small class="text-muted">{{ player.first_name}}</small>
-			<small class="text-muted">{{ player.last_name}}</small>
+			<a class="mr-3" href="#">{{ playerbelong.player.username }}</a>
+			<small class="text-muted">{{ playerbelong.player.first_name}}</small>
+			<small class="text-muted">{{ playerbelong.player.last_name}}</small>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<p class="article-content">Email : {{ player.email }}</p>
-				<p class="article-content">Phone : {{ player.numTel }}</p>
+				<p class="article-content">Email : {{ playerbelong.player.email }}</p>
+				<p class="article-content">Phone : {{ playerbelong.player.numTel }}</p>
 			</div>
 			<div class="col-md-3"></div>
 			<div class="col-md-3">
-				<a class="btn btn-danger" href="{% url 'delete_player' player.id  team.id %}">Delete</a>
+				<a class="btn btn-danger" href="{% url 'delete_player' playerbelong.id  %}">Delete</a>
 			</div>
 		</div>
 	</div>

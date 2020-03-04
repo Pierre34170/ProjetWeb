@@ -126,10 +126,10 @@ class PropositionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 ''' Gestion des entrainements '''
 
 
-class TrainingListView(ListView):
+class TrainingListView(LoginRequiredMixin, ListView):
 	model = Training
 	context_object_name = 'trainings'
-	ordering = ['date_posted']
+	ordering = ['date_training']
 
 
 class TrainingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -192,10 +192,11 @@ class TeamListView(ListView):
 
 class TeamCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 	model = Team
-	fields = ['libelle_team', 'nb_players']
+	fields = ['libelle_team', 'nb_players_max']
 
 	def form_valid(self, form):
 		form.instance.creator =  self.request.user
+		form.instance.nb_players = 0
 
 		return super().form_valid(form)
 
@@ -277,6 +278,15 @@ def SuggestTraining(request):
 
 	return render(request, 'proposition/training_form.html', context)
 
+'''
+@login_required
+def SeeMyTrainings(request):
+	if request.user.is_captain:
+
+		alltrainings=Training.objects.all()
+		myteams = BelongToTeam.objects.filter(player=request.user)
+		mytrainings=alltrainings.filter(team_training=request.)
+'''
 
 
 @login_required
@@ -320,5 +330,7 @@ def Reservation(request, pk):
 
 		return redirect('home')
 
-	return HttpResponseRedirect(reverse('confirmation', kwargs={'pk': proposition.id}))
+	return render()
+
+#	return HttpResponseRedirect(reverse('confirmation', kwargs={'pk': proposition.id}))
 
