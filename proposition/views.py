@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import OrganizeForm
 from django.contrib.auth.decorators import login_required
@@ -10,11 +10,14 @@ from django.views.generic import (
 	DeleteView
 	)
 
+from django.contrib import messages
+
 from django.utils import timezone
-from .models import Proposition, Training, Match
-from account.models import Team
-from .forms import ResearchMatchForm
+from .models import Proposition, Training, Reserve
+from account.models import Team, Account
+from .forms import ResearchMatchForm, SuggestTrainingForm
 from django.contrib.auth.decorators import user_passes_test
+
 
 '''
 @login_required
@@ -54,7 +57,7 @@ class PropositionListView(LoginRequiredMixin, ListView):
 	model = Proposition
 #	temmplate_name = 'proposition/display_games.html'
 	context_object_name = 'propositions'
-	ordering = ['-date_posted']
+	ordering = ['date_posted']
 
 
 
@@ -70,10 +73,19 @@ class PropositionDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView)
 			return True
 		return False
 
+'''
+def DetailProposition(request, pk):
+	proposition = Proposition.objects.get(id=pk)
+
+	context = {'proposition' : proposition}
+
+	return render(request, )
+'''
 
 class PropositionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 	model = Proposition
-	fields = ['title', 'date_match', 'match']
+	fields = ['title', 'date_match', 'hour_beggin', 'lieu_match', 'name_stadium', ]
+
 
 	def form_valid(self, form):
 		form.instance.author = self.request.user
@@ -86,7 +98,7 @@ class PropositionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
 
 class PropositionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Proposition
-	fields = ['title', 'date_match', 'match']
+	fields = ['title', 'date_match', 'hour_beggin', 'lieu_match', 'name_stadium', ]
 
 	def form_valid(self, form):
 		form.instance.author = self.request.user
@@ -117,7 +129,7 @@ class PropositionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 class TrainingListView(ListView):
 	model = Training
 	context_object_name = 'trainings'
-	ordering = ['-date_posted']
+	ordering = ['date_posted']
 
 
 class TrainingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -133,7 +145,7 @@ class TrainingCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 	fields = ['date_training', 'hour_training', 'type_training', 'team_training']
 
 	def form_valid(self, form):
-		form.instance.team_training = self.request.user.team
+#		form.instance.team_training = self.request.user.team
 		return super().form_valid(form)
 
 	def test_func(self):
@@ -172,12 +184,19 @@ class TrainingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 ''' Creer son equipe '''
 
+class TeamListView(ListView):
+	model = Team
+	context_object_name = 'teams'
+	ordering = ['date_creation']
+
+
 class TeamCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 	model = Team
-	fields = ['libelle_team']
+	fields = ['libelle_team', 'nb_players']
 
 	def form_valid(self, form):
-		self.request.user.team = form.instance
+		form.instance.creator =  self.request.user
+
 		return super().form_valid(form)
 
 
@@ -186,8 +205,20 @@ class TeamCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 			return True
 		return False
 
+class TeamDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	model = Team
+	success_url = '/'
+
+	def test_func(self):
+		team = self.get_object()
+		if (self.request.user.is_captain and team.creator == self.request.user):
+			return True
+		return False
+
+
 # creer son match avant de le proposer 
 
+'''
 class MatchCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 	model = Match
 	fields = ['real_date', 'hour_beggin', 'lieu_match']
@@ -200,7 +231,7 @@ class MatchCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 		if self.request.user.is_captain:
 			return True
 		return False
-
+'''
 
 
 # rechercher une proposition de matchs a une date donnée
@@ -228,5 +259,66 @@ def ResearchMatch(request):
 	return render(request, 'proposition/proposition_list.html', context)
 
 
+# creer un entrainement avec seulement les équipes que j'ai creéé
 
+@login_required
+@user_passes_test(is_captain_check, login_url='home')
+def SuggestTraining(request):
+	if request.method=='POST':
+		form = SuggestTrainingForm(request.user, request.POST)
+		if form.is_valid():
+			instance = form.save()
+			messages.success(request, f'Your Training have been add !')
+			return redirect('home')
+	else : 
+		form = SuggestTrainingForm(request.user)
+
+	context = {'form' : form}
+
+	return render(request, 'proposition/training_form.html', context)
+
+
+
+@login_required
+@user_passes_test(is_captain_check, login_url='home')
+def MyTeams(request):
+	myteams=Team.objects.all()
+	teams=myteams.filter(creator=request.user)
+
+	context = {'teams':teams}
+
+	return render(request, 'account/team_list.html', context)
+
+
+'''
+class ReserveCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+	model = Reserve
+
+	def form_valid(self, form):
+		form.instance.player = self.request.user
+		form.instance.team = self.object
+		return super().form_valid(form)
+
+	def test_func(self):
+		if self.request.user.is_captain:
+			return True
+		return False
+'''
+
+
+
+def Reservation(request, pk):
+	proposition = Proposition.objects.get(id=pk)
+	player = Account.objects.get(id=request.user.id)
+
+	context={'proposition' : proposition, 'player' : player }
+
+	if request.method=='POST':
+		reserve = Reserve(team=team, player=player)
+		reserve.save()
+		messages.success(request, f'Proposition accepted !')
+
+		return redirect('home')
+
+	return HttpResponseRedirect(reverse('confirmation', kwargs={'pk': proposition.id}))
 

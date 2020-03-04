@@ -21,7 +21,7 @@ class AccountUpdateForm(forms.ModelForm):
 
 	class Meta:
 		model = Account
-		fields = ('email', 'username', 'first_name', 'last_name', 'city', 'numTel', 'team')
+		fields = ('email', 'username', 'first_name', 'last_name', 'city', 'numTel')
 
 
 '''	def clean_email(self):

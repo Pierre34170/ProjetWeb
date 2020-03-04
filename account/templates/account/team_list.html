@@ -1,0 +1,13 @@
+{% extends "project/base.html" %}
+{% block content %}
+
+{% for team in teams %}
+<article class="media content-section">
+	<div class="media-body">
+		<h2><a class="article-title" href="{% url 'team_detail' team.id %}">{{ team.libelle_team }}</a></h2>
+		<p class="article-content">{{ team.date_creation|date:"F d, Y" }}</p>
+	</div>
+</article>
+{% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends "project/base.html" %}
+{% block content %}
+
+<div class="content-section">
+	<form action="" method="get">
+		{{ myFilter.form }}
+		<button class="btn btn-primary" type="submit">Research</button>
+	</form>
+</div>
+
+{% for team in teams %}
+<article class="media content-section">
+	<div class="media-body">
+		<div class="article-metadata">
+			<a class="mr-2" href="#">capitain : {{ team.creator }}</a>
+		</div>
+			<h3><a class="article-title" href="{% url 'join_team' team.id %}">{{ team.libelle_team }}</a></h3>
+	</div>
+</article>
+{% endfor %}
+
+
+{% endblock content %}

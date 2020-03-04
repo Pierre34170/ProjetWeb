@@ -6,11 +6,6 @@
 <div class="row">
 	<div class="col">
 		<div class="button-match">
-			<a href="{% url 'match_create' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Reserve your match</button>
-		</div>
-	</div>
-	<div class="col">
-		<div class="button-match">
 			<a href="{% url 'proposition_create' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Suggest a Game</button>
 		</div>
 	</div>
@@ -22,7 +17,7 @@
 </div>
 {% else %}
 <div class="button-match">
-	<a href=""><button type="button" class="btn btn-secondary btn-lg btn-block">Join A Team</button>
+	<a href="{% url 'research_team' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Join A Team</button>
 </div>
 {% endif %}
 
@@ -30,7 +25,7 @@
 	<div class= "row">
 		<div class="col">
 			<div class="card text-white text-center" id="see-matchs">
-				<div class="card-header">See Your Matchs</div>
+				<div class="card-header"><h3>See Your Matchs</h3></div>
 				<div class="card-body">
 					<h3 class="card-title"></h3>
 				</div>
@@ -38,7 +33,7 @@
 		</div>
 		<div class="col">
 			<div class="card text-white text-center" id="see-trainings">
-				<div class="card-header">See Your Trainings</div>
+				<div class="card-header"><h3>See Your Trainings</h3></div>
 				<div class="card-body">
 					<h2 class="card-title">{{count_trainings}}</h2>
 				</div>

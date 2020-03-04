@@ -3,7 +3,7 @@ from account.models import Account, Team
 from django.utils import timezone
 from django.urls import reverse
 
-
+'''
 class Match(models.Model):
 	real_date = models.DateField()
 	hour_beggin = models.TimeField()
@@ -14,7 +14,7 @@ class Match(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('home')
-		
+'''		
 
 class Training(models.Model):
 	date_training = models.DateField()
@@ -29,20 +29,22 @@ class Training(models.Model):
 		return reverse('training_detail', kwargs={'pk': self.pk})
 
 		
-
+'''
 class Stadium(models.Model):
 	libelle_stadium = models.CharField(max_length=300)
 	lieu_stadium = models.CharField(max_length=300)
 
 	def __str__(self):
 		return (self.libelle_stadium)
-
+'''
 
 class Proposition(models.Model):
 	title = models.CharField(max_length=300)
 	date_posted = models.DateTimeField(default=timezone.now)
 	date_match = models.DateField()
-	match = models.ForeignKey(Match, null = True, on_delete=models.CASCADE)
+	hour_beggin = models.TimeField()
+	lieu_match = models.CharField(max_length=300)
+	name_stadium = models.CharField(max_length=50)
 	author = models.ForeignKey(Account, null = True, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -52,8 +54,16 @@ class Proposition(models.Model):
 		return reverse('proposition_detail', kwargs={'pk': self.pk})
 
 
+
+class Reserve(models.Model):
+	player = models.ForeignKey(Account, on_delete=models.CASCADE)
+	proposition = models.ForeignKey(Proposition, on_delete=models.CASCADE)
+	date_reservation = models.DateTimeField(default=timezone.now)
+
+
+
 class Play(models.Model):
-	game = models.ForeignKey(Match, on_delete=models.CASCADE)
+	game = models.ForeignKey(Proposition, on_delete=models.CASCADE)
 	team = models.ForeignKey(Team, on_delete=models.CASCADE)
 	score = models.CharField(max_length=10)
 

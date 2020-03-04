@@ -5,7 +5,7 @@
 	<form action="" method="POST">
 		{% csrf_token %}
 		{{form|crispy}}	
-		<input type="submit" name="Submit">
+			<input class="btn btn-primary" type="submit" value="Validate">
 	</form>
 </div>
 {% for proposition in propositions %}
@@ -18,6 +18,7 @@
 		</div>
 		<h2><a class="article-title" href="{% url 'proposition_detail' proposition.id %}">{{ proposition.title }}</a></h2>
 		<p class="article-content">Date of the Match : {{ proposition.date_match }}</p>
+		<p class="article-content">Hour : {{ proposition.hour_beggin }}</p>
 	</div>
 </article>
 {% else %}

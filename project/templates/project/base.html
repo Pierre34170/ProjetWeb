@@ -36,10 +36,17 @@
 
 						{% if user.is_captain %}
 
-						<li class="nav-item active">
-							<a class="nav-link" href="{% url 'team_create' %}">Team</a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Teams
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{% url 'team_list' %}">See your teams</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'team_create' %}">Create a Team</a>
+							</div>
 						</li>
-
+						
 						{% endif %}
 				</div>
 
@@ -50,12 +57,14 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#">Stats</a>
 						</li>
+						{% if user.is_captain %}
 						<li class="nav-item">
 							<a class="nav-link" href="#">Responses</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'proposition_list' %}">Games</a>
 						</li>
+						{% endif %}
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'profile' %}">Profile</a>
 						</li>

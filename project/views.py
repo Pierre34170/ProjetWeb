@@ -5,17 +5,16 @@ import datetime
 
 def home(request):
 
-	trainings=Training.objects.all()
+	if request.user.is_authenticated:
+		trainings=Training.objects.all()
+		teams=Team.objects.filter(creator=request.user)
 
-	total_trainings=trainings.filter(team_training=request.user.team)
-	total_trainings2=total_trainings.filter(date_training__gte=datetime.date.today())
+		total_trainings=trainings.filter(team_training__in=teams)
+		total_trainings2=total_trainings.filter(date_training__gte=datetime.date.today())
 
-	count_trainings=total_trainings2.count()
+		count_trainings=total_trainings2.count()
 
-	context = {'count_trainings':count_trainings}
+		context = {'count_trainings':count_trainings}
+		return render(request, 'project/home.html', context)
 
-	return render(request, 'project/home.html', context)
-
-
-def about(request):
-	return render(request, 'project/about.html', {'title': 'About'})
+	return render(request, 'project/home.html')

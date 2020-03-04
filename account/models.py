@@ -60,20 +60,6 @@ class Team (models.Model):
 		return self.libelle_team
 '''
 
-class Team (models.Model):
-	libelle_team = models.CharField(max_length=30, unique=True)
-#	nb_players = models.PositiveIntegerField()
-	date_creation = models.DateTimeField(verbose_name='date creation', auto_now=True)
-
-	def __str__(self):
-		return self.libelle_team
-
-	def get_absolute_url(self):
-		return reverse('home')
-'''
-class BelongTo(models.Model):
-
-'''
 
 
 class Account(AbstractBaseUser):
@@ -83,7 +69,6 @@ class Account(AbstractBaseUser):
 	email = models.EmailField(verbose_name="email", max_length=60, unique=True)
 	is_captain = models.BooleanField(default=False)
 	city = models.CharField(max_length=30)
-	team = models.ForeignKey(Team, on_delete=models.CASCADE, blank=True, null=True)
 	numTel = models.CharField(max_length=10, unique=True)
 	date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
 	last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
@@ -106,5 +91,23 @@ class Account(AbstractBaseUser):
 	def has_module_perms(self, app_Label):
 		return True
 
+
+
+class Team (models.Model):
+	libelle_team = models.CharField(max_length=30, unique=True)
+	nb_players = models.PositiveIntegerField(null=True)
+	date_creation = models.DateTimeField(verbose_name='date creation', auto_now=True)
+	creator = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.libelle_team
+
+	def get_absolute_url(self):
+		return reverse('home')
+
+
+class BelongToTeam (models.Model):
+	team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
+	player = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
 
 

@@ -1,9 +1,10 @@
 from django.contrib import admin
 
-from proposition.models import Match, Stadium, Proposition, Play, Training
+from proposition.models import Proposition, Play, Training, Reserve
 
-admin.site.register(Match)
-admin.site.register(Stadium)
+
 admin.site.register(Proposition)
+admin.site.register(Reserve)
 admin.site.register(Play)
 admin.site.register(Training)
+
