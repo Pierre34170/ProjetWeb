@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from account.models import Account
-
+from .models import Profile
 
 
 class RegistrationForm(UserCreationForm):
@@ -23,6 +23,11 @@ class AccountUpdateForm(forms.ModelForm):
 		model = Account
 		fields = ('email', 'username', 'first_name', 'last_name', 'city', 'numTel')
 
+
+class ProfileUpdateForm(forms.ModelForm):
+	class Meta:
+		model =Profile
+		fields = ['image']
 
 '''	def clean_email(self):
 		if self.is_valid():

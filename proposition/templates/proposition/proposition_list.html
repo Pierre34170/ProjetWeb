@@ -11,6 +11,7 @@
 {% for proposition in propositions %}
 {% if propositions %}
 <article class="media content-section">
+	<img class="rounded-circle article-img" src="{{ proposition.author.profile.image.url }}">
 	<div class="media-body">
 		<div class="article-metadata">
 			<a class="mr-2" href="#">{{ proposition.author }}</a>

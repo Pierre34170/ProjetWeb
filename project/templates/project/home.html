@@ -21,13 +21,29 @@
 </div>
 {% endif %}
 
+
+
+<div class="row">
+	<div class="col">
+		<div class="button-match">
+			<a href="{% url 'matchs' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Your Matchs : {{ count_matchs }}</button>
+		</div>
+	</div>
+	<div class="col">
+		<div class="button-match">
+			<a href="{% url 'training_list' %}"><button type="button" class="btn btn-secondary btn-lg btn-block">Your Trainings : {{count_trainings}}</button>
+		</div>
+	</div>
+</div>
+
+<!--
 <div class="see">
 	<div class= "row">
 		<div class="col">
 			<div class="card text-white text-center" id="see-matchs">
 				<div class="card-header"><h3>See Your Matchs</h3></div>
 				<div class="card-body">
-					<h3 class="card-title"></h3>
+					<h3 class="card-title">{{ count_matchs }}</h3>
 				</div>
 			</div>
 		</div>
@@ -35,12 +51,13 @@
 			<div class="card text-white text-center" id="see-trainings">
 				<div class="card-header"><h3>See Your Trainings</h3></div>
 				<div class="card-body">
-					<h2 class="card-title">{{count_trainings}}</h2>
+					<h3 class="card-title">{{count_trainings}}</h3>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+-->
 {% endif %}
 	
 {% endblock content %}

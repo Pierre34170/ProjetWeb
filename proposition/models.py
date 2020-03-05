@@ -63,9 +63,9 @@ class Reserve(models.Model):
 
 
 class Play(models.Model):
-	game = models.ForeignKey(Proposition, on_delete=models.CASCADE)
+	game = models.ForeignKey(Proposition, null = True, on_delete=models.CASCADE)
 	team = models.ForeignKey(Team, on_delete=models.CASCADE)
-	score = models.CharField(max_length=10)
+	score = models.CharField(max_length=10, null = True)
 
 '''
 class Response(models.Model):

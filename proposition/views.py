@@ -13,11 +13,11 @@ from django.views.generic import (
 from django.contrib import messages
 
 from django.utils import timezone
-from .models import Proposition, Training, Reserve
-from account.models import Team, Account
-from .forms import ResearchMatchForm, SuggestTrainingForm
+from .models import Proposition, Training, Reserve, Play
+from account.models import Team, Account, BelongToTeam
+from .forms import ResearchMatchForm, SuggestTrainingForm, ConfirmationMatchForm
 from django.contrib.auth.decorators import user_passes_test
-
+import datetime
 
 '''
 @login_required
@@ -64,7 +64,7 @@ class PropositionListView(LoginRequiredMixin, ListView):
 '''	def display_propositions(self):
 		propositions=Proposition.objects.get(date_match > timezone.now)
 '''
-
+'''
 class PropositionDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 	model = Proposition
 
@@ -72,15 +72,15 @@ class PropositionDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView)
 		if self.request.user.is_captain:
 			return True
 		return False
-
 '''
+@login_required
 def DetailProposition(request, pk):
 	proposition = Proposition.objects.get(id=pk)
 
 	context = {'proposition' : proposition}
 
-	return render(request, )
-'''
+	return render(request, 'proposition/proposition_detail.html', context )
+
 
 class PropositionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 	model = Proposition
@@ -95,6 +95,7 @@ class PropositionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
 		if self.request.user.is_captain:
 			return True
 		return False
+
 
 class PropositionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Proposition
@@ -132,6 +133,7 @@ class TrainingListView(LoginRequiredMixin, ListView):
 	ordering = ['date_training']
 
 
+
 class TrainingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 	model = Training
 
@@ -159,12 +161,11 @@ class TrainingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	fields = ['date_training', 'hour_training', 'type_training', 'team_training']
 
 	def form_valid(self, form):
-		form.instance.team_training = self.request.user.team
 		return super().form_valid(form)
 
 	def test_func(self):
 		training = self.get_object()
-		if (self.request.user.team == training.team_training and self.request.user.is_captain):
+		if (self.request.user.is_captain):
 			return True
 		return False
 
@@ -175,7 +176,7 @@ class TrainingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 	def test_func(self):
 		training = self.get_object()
-		if (self.request.user.team == training.team_training and self.request.user.is_captain):
+		if (self.request.user.is_captain):
 			return True
 		return False
 
@@ -249,7 +250,16 @@ def ResearchMatch(request):
 		if form.is_valid():
 			instance = form.save(commit=False)
 			date = instance.date_match
-			propositions = Proposition.objects.filter(date_match= date)
+			allpropositions = Proposition.objects.filter(date_match= date)
+			reservation = Reserve.objects.all()
+
+			reservationtab=[]
+
+			for i in reservation:
+				reservationtab.append(i.proposition.id)
+
+			propositions = allpropositions.exclude(id__in=reservationtab)
+
 			context = {'form' : form, 'propositions' : propositions}
 			return render(request, 'proposition/proposition_list.html', context)
 	else:
@@ -316,7 +326,8 @@ class ReserveCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 '''
 
 
-
+@login_required
+@user_passes_test(is_captain_check, login_url='home')
 def Reservation(request, pk):
 	proposition = Proposition.objects.get(id=pk)
 	player = Account.objects.get(id=request.user.id)
@@ -324,13 +335,120 @@ def Reservation(request, pk):
 	context={'proposition' : proposition, 'player' : player }
 
 	if request.method=='POST':
-		reserve = Reserve(team=team, player=player)
+		reserve = Reserve(proposition=proposition, player=player)
 		reserve.save()
 		messages.success(request, f'Proposition accepted !')
 
 		return redirect('home')
 
-	return render()
+	return render(request, 'proposition/reserve_confirm.html', context)
 
 #	return HttpResponseRedirect(reverse('confirmation', kwargs={'pk': proposition.id}))
+
+
+@login_required
+@user_passes_test(is_captain_check, login_url='home')
+def MyResponse(request):
+	propositions = Proposition.objects.filter(author=request.user)
+	propositionfutur = propositions.filter(date_match__gte=datetime.date.today())
+
+	response = Reserve.objects.filter(proposition__in=propositionfutur)
+
+	context = {'response' : response}
+
+	return render(request, 'proposition/proposition_response.html', context)
+
+
+@login_required
+def MyTrainings(request):
+
+	if request.user.is_captain:
+
+		trainings=Training.objects.all()
+		teams=Team.objects.filter(creator=request.user)
+		total_trainings1=trainings.filter(team_training__in=teams)
+		total_trainings=total_trainings1.filter(date_training__gte=datetime.date.today())
+
+		context = { 'total_trainings' : total_trainings }
+		return render(request, 'proposition/training_list.html', context)
+
+	else :
+		trainings=Training.objects.all()
+		teams = BelongToTeam.objects.filter(player=request.user)
+
+		mytrainingtab=[]
+
+		for i in teams:
+			mytrainingtab.append(i.team)
+
+		mytrainings=trainings.filter(team_training__in=mytrainingtab)
+
+		total_trainings=mytrainings.filter(date_training__gte=datetime.date.today())
+			
+		context = {'total_trainings' : total_trainings}
+		return render(request, 'proposition/training_list.html', context)
+
+
+@login_required
+def DetailMatch(request, pk):
+	proposition = Proposition.objects.get(id=pk)
+	if request.method=='POST':
+		form = ConfirmationMatchForm(request.user, request.POST)
+		if form.is_valid():
+			instance = form.save()
+			instance.game = proposition
+			instance.save()
+
+			return redirect('matchs')
+	else:
+		form = ConfirmationMatchForm(request.user)
+
+	context = {'proposition' : proposition, 'form' : form}
+
+	return render(request, 'proposition/matchs_detail.html', context )
+
+
+@login_required
+def MyMatchs(request):
+	if request.user.is_captain:
+		propositions = Proposition.objects.filter(author=request.user)
+		propositionfutur = propositions.filter(date_match__gte=datetime.date.today())
+		response = Reserve.objects.filter(proposition__in=propositionfutur)
+		responses = Reserve.objects.filter(player=request.user)
+
+		myresponses = response.union(responses)
+
+		myresponsestab = []
+
+		for i in myresponses:
+			myresponsestab.append(i.proposition)
+
+		context = {'myresponsestab' : myresponsestab}
+
+		return render(request, 'proposition/matchs.html', context)
+
+	else:
+		teams = BelongToTeam.objects.filter(player=request.user)
+
+		myteamtab = []
+		for i in teams:
+			myteamtab.append(i.team)
+
+		mymatchs = Play.objects.filter(team__in=myteamtab)
+
+		myresponsestab = []
+
+		for i in mymatchs:
+			myresponsestab.append(i.game)
+
+		context = {'myresponsestab' : myresponsestab}
+
+		return render(request, 'proposition/matchs.html', context)
+
+
+
+
+
+
+
 

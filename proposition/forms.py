@@ -1,5 +1,5 @@
 from django import forms
-from .models import Proposition, Training
+from .models import Proposition, Training, Play
 from account.models import Team
 import datetime
 import re
@@ -50,5 +50,15 @@ class SuggestTrainingForm(forms.ModelForm):
 		super(SuggestTrainingForm, self).__init__(*args, **kwargs)
 		self.fields['team_training'].queryset = Team.objects.filter(creator=user)
 
+
+
+class ConfirmationMatchForm(forms.ModelForm):
+	class Meta:
+		model = Play
+		fields = ['team']
+
+	def __init__(self, user,*args, **kwargs):
+		super(ConfirmationMatchForm, self).__init__(*args, **kwargs)
+		self.fields['team'].queryset = Team.objects.filter(creator=user)
 
 

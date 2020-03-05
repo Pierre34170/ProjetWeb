@@ -1,0 +1,20 @@
+{% extends "project/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="content-section">
+	<h2>Proposition Accepted</h2>
+</div>
+
+
+{% for myresponse in response %}
+<article class="media content-section">
+	<div class="media-body">
+		<div class="article-metadata">
+			<small class="text-muted">{{ myresponse.date_reservation|date:"F d, Y" }}</small>
+		</div>
+		<legend class="border-bottom mb-4">{{ myresponse.player.username }} has accepted your proposition : {{ myresponse.proposition.title }}</legend>
+	</div>
+</article>
+{% endfor %}
+{% endblock content %}

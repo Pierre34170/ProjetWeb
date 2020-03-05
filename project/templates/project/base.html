@@ -15,11 +15,7 @@
 
 
 
-	{% if title %}
-	<title>{{ title }}</title>
-	{% else %}
-	<title>Django</title>
-	{% endif %}
+	<title>Play Together</title>
 </head>
 <body>
 	<header class="site-header">
@@ -53,24 +49,21 @@
 				<!-- Navbar Right Side -->
 				<div class="navbar-nav">
 					{% if user.is_authenticated %}
-
-						<li class="nav-item">
-							<a class="nav-link" href="#">Stats</a>
-						</li>
+					
 						{% if user.is_captain %}
-						<li class="nav-item">
-							<a class="nav-link" href="#">Responses</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'proposition_list' %}">Games</a>
-						</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{% url 'proposition_response' %}">Responses</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{% url 'proposition_list' %}">Games</a>
+							</li>
 						{% endif %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'profile' %}">Profile</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'logout' %}">Logout</a>
-						</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{% url 'profile' %}">Profile</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+							</li>
 
 					{% else %}
 						<li class="nav-item">

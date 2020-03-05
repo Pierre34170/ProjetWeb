@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from account.models import Account, Team, BelongToTeam
+from account.models import Account, Team, BelongToTeam, Profile
 
 class AccountAdmin(UserAdmin):
 	list_display = ('email','date_joined','username','first_name','last_name','is_captain', 'numTel',)
@@ -14,3 +14,4 @@ class AccountAdmin(UserAdmin):
 admin.site.register(Account,AccountAdmin)
 admin.site.register(Team)
 admin.site.register(BelongToTeam)
+admin.site.register(Profile)

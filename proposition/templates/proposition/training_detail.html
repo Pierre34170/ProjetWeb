@@ -4,10 +4,12 @@
 <article class="media content-section">
 	<div class="media-body">
 		<div class="article-metadata">
-			<a class="mr-2" href="#">{{ object.team_training }}</a>
+			<a class="mr-2">{{ object.team_training }}</a>
 		</div>
-		<h2 class="article-title">{{ object.type_training }}</h2>
-		<p class="article-content">{{ object.date_training|date:"F d, Y" }}</p>
+		<h2 class="article-title">Training</h2>
+		<p class="article-content">Date : {{ object.type_training }}</p>
+		<p class="article-content">Date : {{ object.date_training|date:"F d, Y" }}</p>
+		<p class="article-content">Hour : {{ object.hour_training }}</p>
 		{% if user.is_captain %}
 		<div>
 			<a class="btn btn-primary btn-sm" href="{% url 'training_update' object.id %}" >Update</a>

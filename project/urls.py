@@ -3,7 +3,7 @@ from . import views
 from proposition import views as proposition_views
 from proposition.views import (
 	PropositionListView, 
-	PropositionDetailView, 
+#	PropositionDetailView, 
 	PropositionCreateView,
 	PropositionUpdateView,
 	PropositionDeleteView,
@@ -20,6 +20,11 @@ from proposition.views import (
     ResearchMatch,
     SuggestTraining,
     Reservation,
+    DetailProposition,
+    MyResponse,
+    MyTrainings,
+    MyMatchs,
+    DetailMatch,
 
 )
 from account.views import (
@@ -31,15 +36,20 @@ urlpatterns = [
     path('', views.home, name='home'),
 #    path('about/', views.about, name='about'),
 #    path('organize/', proposition_views.organize_view, name='organize'),
-    path('proposition/', ResearchMatch, name='proposition_list'),
-    path('proposition/<int:pk>', PropositionDetailView.as_view(), name='proposition_detail'),
+    path('proposition_list/', ResearchMatch, name='proposition_list'),
+    path('proposition/<int:pk>', DetailProposition, name='proposition_detail'),
     path('proposition/new/', PropositionCreateView.as_view(), name='proposition_create'),
     path('proposition/<int:pk>/update/', PropositionUpdateView.as_view(), name='proposition_update'),
     path('proposition/<int:pk>/delete/', PropositionDeleteView.as_view(), name='proposition_delete'),
 
     path('proposition/<int:pk>/confirm', Reservation, name='confirmation' ),
 
-    path('training_list/', TrainingListView.as_view(), name='training_list'),
+    path('responses/', MyResponse, name='proposition_response'),
+
+    path('matchs/', MyMatchs, name='matchs'),
+    path('matchs/<int:pk>/', DetailMatch, name='matchs_detail'),
+
+    path('training_list/', MyTrainings, name='training_list'),
     path('training/<int:pk>/', TrainingDetailView.as_view(), name='training_detail'),
     path('training/new/', SuggestTraining, name='training_create'), 
     path('training/<int:pk>/update/', TrainingUpdateView.as_view(), name='training_update'),

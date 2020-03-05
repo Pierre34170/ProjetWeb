@@ -1,11 +1,12 @@
 {% extends "project/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
-{% if proposition %}
+
 <article class="media content-section">
 	<img class="rounded-circle article-img" src="{{ proposition.author.profile.image.url }}">
 	<div class="media-body">
 		<div class="article-metadata">
-			<a class="mr-2" href="#">{{ proposition.author }}</a>
+			<a class="mr-2" href="#">capitain : {{ proposition.author }}</a>
 			<small class="text-muted">{{ proposition.date_posted|date:"F d, Y" }}</small>
 		</div>
 		<div class="row">
@@ -18,17 +19,16 @@
 			</div>
 			<div class="col-md-3"></div>
 			<div class="col-md-3">
-				<div>
-					{% if proposition.author == user %}
-					<a class="btn btn-primary btn-sm" href="{% url 'proposition_update' proposition.id %}" >Update</a>
-					<a class="btn btn-secondary btn-sm" href="{% url 'proposition_delete' proposition.id %}" >Delete</a>
-					{% else %}
-					<a class="btn btn-outline-primary" href="{% url 'confirmation' proposition.id %}">Accept</a>
-					{% endif %}
-				</div>
+				{% if proposition.author == user %}
+				<form action="" method="POST">
+					{% csrf_token %}
+					{{form|crispy}}
+					<input class="btn btn-primary" type="submit" value="Validate">
+				</form>
+				{% endif %}
 			</div>
 	</div>
 </article>
-{% endif %}
+
 
 {% endblock content %}

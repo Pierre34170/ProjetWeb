@@ -1,14 +1,14 @@
 {% extends "project/base.html" %}
 {% block content %}
 
-{% for training in trainings %}
+{% for training in total_trainings %}
 <article class="media content-section">
 	<div class="media-body">
 		<div class="article-metadata">
-			<a class="mr-2" href="#">{{ training.team_training }}</a>
+			<a class="mr-2">{{ training.team_training }}</a>
 		</div>
-		<h2><a class="article-title" href="">{{ training.title_training }}</a></h2>
-		<p class="article-content">{{ training.date_training|date:"F d, Y" }}</p>
+		<h2><a class="article-title" href="{% url 'training_detail' training.id %}">TRAINING : {{ training.type_training }}</a></h2>
+		<p class="article-content">Date : {{ training.date_training|date:"F d, Y" }} | Hour : {{ training.hour_training }} </p>
 	</div>
 </article>
 {% endfor %}
