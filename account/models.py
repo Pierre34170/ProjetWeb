@@ -43,7 +43,7 @@ class MyAccountManager(BaseUserManager):
 			is_captain=is_captain,
 			city=city,
 			numTel=numTel,
-			password=password
+			password=password,
 			)
 
 		user.is_admin = True
@@ -51,17 +51,6 @@ class MyAccountManager(BaseUserManager):
 		user.is_superuser = True
 		user.save(using=self._db)
 		return user
-
-'''
-class Team (models.Model):
-	libelle_team = models.CharField(max_length=30)
-	date_creation = models.DateTimeField(default=timezone.now)
-#	plays = models.ManyToManyField(Match, through='Play' )
-
-	def __str__(self):
-		return self.libelle_team
-'''
-
 
 
 class Account(AbstractBaseUser):
@@ -72,6 +61,7 @@ class Account(AbstractBaseUser):
 	is_captain = models.BooleanField(default=False)
 	city = models.CharField(max_length=30)
 	numTel = models.CharField(max_length=10, unique=True)
+	image = models.ImageField(default='default.jpg', upload_to='profile_pics')
 	date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
 	last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
 	is_admin = models.BooleanField(default=False)
@@ -94,6 +84,18 @@ class Account(AbstractBaseUser):
 		return True
 
 
+	def save(self, *args, **kwargs):
+		super().save()
+
+		img = Image.open(self.image.path)
+
+		if img.height > 300 or img.width > 300:
+			output_size = (300, 300)
+			img.thumbnail(output_size)
+			img.save(self.image.path)
+
+
+'''
 class Profile(models.Model):
 	user = models.OneToOneField(Account, on_delete=models.CASCADE)
 	image = models.ImageField(default='default.jpg', upload_to='profile_pics')
@@ -110,7 +112,7 @@ class Profile(models.Model):
 			output_size = (300, 300)
 			img.thumbnail(output_size)
 			img.save(self.image.path)
-
+'''
 
 class Team (models.Model):
 	libelle_team = models.CharField(max_length=30, unique=True)

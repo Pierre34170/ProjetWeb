@@ -1,3 +1,5 @@
+'''
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Profile, Account
@@ -13,3 +15,5 @@ def create_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Account)
 def save_profile(sender, instance, **kwargs):
 	instance.profile.save()
+
+'''

@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="content-section">
-	<h2>Proposition Accepted</h2>
+	<h2>Proposition Accepted : </h2>
 </div>
 
 
@@ -13,7 +13,7 @@
 		<div class="article-metadata">
 			<small class="text-muted">{{ myresponse.date_reservation|date:"F d, Y" }}</small>
 		</div>
-		<legend class="border-bottom mb-4">{{ myresponse.player.username }} has accepted your proposition : {{ myresponse.proposition.title }}</legend>
+		<h2><a class="article-title" href="{% url 'matchs_detail' myresponse.proposition.id %}">{{ myresponse.player.username }} has accepted your proposition : {{ myresponse.proposition.title }}</a></h2>
 	</div>
 </article>
 {% endfor %}

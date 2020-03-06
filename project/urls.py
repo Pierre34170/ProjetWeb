@@ -25,7 +25,6 @@ from proposition.views import (
     MyTrainings,
     MyMatchs,
     DetailMatch,
-    involveTeam,
 
 )
 from account.views import (
@@ -45,12 +44,11 @@ urlpatterns = [
     path('proposition/<int:pk>/delete/', PropositionDeleteView.as_view(), name='proposition_delete'),
 
     path('proposition/<int:pk>/confirm', Reservation, name='confirmation' ),
-    path('proposition/<int:pk>/confirm/chooseyourteam/', involveTeam, name='choose'),
 
     path('responses/', MyResponse, name='proposition_response'),
+    path('matchs/<int:pk>/', DetailMatch, name='matchs_detail'),
 
     path('matchs/', MyMatchs, name='matchs'),
-    path('matchs/<int:pk>/', DetailMatch, name='matchs_detail'),
 
     path('training_list/', MyTrainings, name='training_list'),
     path('training/<int:pk>/', TrainingDetailView.as_view(), name='training_detail'),

@@ -335,16 +335,25 @@ def Reservation(request, pk):
 	context={'proposition' : proposition, 'player' : player }
 
 	if request.method=='POST':
-		reserve = Reserve(proposition=proposition, player=player)
-		reserve.save()
+		form = ConfirmationMatchForm(request.user, request.POST)
+		if form.is_valid():
+			instance = form.save()
+			instance.game = proposition
+			instance.save()
+			reserve = Reserve(proposition=proposition, player=player)
+			reserve.save()
+			messages.success(request, f'Proposition accepted !')
+			return redirect('home')
+	else :
+		form = ConfirmationMatchForm(request.user)
 
-		return render(request, 'proposition/choose_team.html', context)
+	context = {'proposition' : proposition, 'player' : player, 'form' : form}
 
 	return render(request, 'proposition/reserve_confirm.html', context)
 
 #	return HttpResponseRedirect(reverse('confirmation', kwargs={'pk': proposition.id}))
 
-
+'''
 @login_required
 @user_passes_test(is_captain_check, login_url='home')
 def involveTeam(request, pk):
@@ -361,6 +370,10 @@ def involveTeam(request, pk):
 	else:
 		form = ConfirmationMatchForm(request.user)
 
+	context = {'proposition' : proposition, 'form' : form}
+
+	return render(request, 'proposition/choose_team.html', context )
+'''
 
 
 @login_required
@@ -368,8 +381,17 @@ def involveTeam(request, pk):
 def MyResponse(request):
 	propositions = Proposition.objects.filter(author=request.user)
 	propositionfutur = propositions.filter(date_match__gte=datetime.date.today())
+	myresponse = Reserve.objects.filter(proposition__in=propositionfutur)
+	myteams = Team.objects.filter(creator=request.user)
+	prop = Play.objects.filter(team__in=myteams)
 
-	response = Reserve.objects.filter(proposition__in=propositionfutur)
+	proptab = []
+
+	for i in prop:
+		proptab.append(i.game)
+
+	response = myresponse.exclude(proposition__in=proptab)
+
 
 	context = {'response' : response}
 
@@ -416,7 +438,7 @@ def DetailMatch(request, pk):
 			instance.game = proposition
 			instance.save()
 
-			return redirect('matchs')
+			return redirect('proposition_response')
 	else:
 		form = ConfirmationMatchForm(request.user)
 

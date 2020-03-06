@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from .forms import RegistrationForm, AccountUpdateForm, ProfileUpdateForm
+from .forms import RegistrationForm, AccountUpdateForm
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
 from .filters import TeamFilter
@@ -21,9 +21,9 @@ def registration_view(request):
 		form = RegistrationForm(request.POST)
 		if form.is_valid():
 			form.save()
-			email = form.cleaned_data.get('email')
-			raw_password = form.cleaned_data.get('password1')
-			account = authenticate(email=email, password=raw_password)
+#			email = form.cleaned_data.get('email')
+#			raw_password = form.cleaned_data.get('password1')
+#			account = authenticate(email=email, password=raw_password)
 			messages.success(request, f'Account created ! Now you can log in')
 			return redirect('login')
 		else:
@@ -39,22 +39,18 @@ def registration_view(request):
 def profile_view(request):
 	if request.method == 'POST':
 		a_form = AccountUpdateForm(request.POST, instance=request.user)
-		p_form = ProfileUpdateForm( request.POST, request.FILES, instance=request.user.profile)
 
-		context = {'a_form':a_form, 'p_form':p_form}
+		context = {'a_form':a_form}
 
-		if a_form.is_valid() and p_form.is_valid():
+		if a_form.is_valid():
 			a_form.save()
-			p_form.save()
 			messages.success(request, f'Your account has been updated!')
 			return redirect('profile')
 
 	else:
 		a_form = AccountUpdateForm(instance=request.user)
-		p_form= ProfileUpdateForm(instance=request.user.profile)
 	context = {
-		'a_form': a_form,
-		'p_form': p_form
+		'a_form': a_form
 	}
 
 	return render(request, 'account/profile.html', context)

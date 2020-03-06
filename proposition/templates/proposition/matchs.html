@@ -7,13 +7,13 @@
 
 {% for matchs in myresponsestab %}
 <article class="media content-section">
-	<img class="rounded-circle article-img" src="{{ matchs.author.profile.image.url }}">
+	<img class="rounded-circle article-img" src="{{ matchs.author.image.url }}">
 	<div class="media-body">
 		<div class="article-metadata">
 			<a class="mr-2" href="#">capitain : {{ matchs.author }}</a>
 			<small class="text-muted">{{ matchs.date_posted|date:"F d, Y" }}</small>
 		</div>
-		<h2><a class="article-title" href="{% url 'matchs_detail' matchs.id %}">{{ matchs.title }}</a></h2>
+		<h2><a class="article-title" href="">{{ matchs.title }}</a></h2>
 		<p class="article-content">Date du match : {{ matchs.date_match }}</p>
 		<p class="article-content">Heure : {{ matchs.hour_beggin }}</p>
 	</div>

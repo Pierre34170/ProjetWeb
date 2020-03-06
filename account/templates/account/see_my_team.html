@@ -4,6 +4,7 @@
 
 {% for playerbelong in playerbelongtoteam %}
 <article class="media content-section">
+	<img class="rounded-circle article-img" src="{{ playerbelong.player.image.url }}">
 	<div class="media-body">
 		<div class="article-metadata">
 			<a class="mr-3" href="#">{{ playerbelong.player.username }}</a>
