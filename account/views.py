@@ -145,6 +145,24 @@ def DeleteMyPlayers(request, pk):
 	return render(request, 'account/delete_player.html',context)
 
 
+@login_required
+@user_passes_test(is_captain_check, login_url='home')
+def DeleteMyTeam(request, pk):
+
+
+	team = Team.objects.get(id=pk)
+
+	if request.method=="POST":
+		team.delete()
+		messages.success(request, f'Team deleted !')
+		return redirect('home')
+
+	context = {'team':team}
+
+	return render(request, 'account/delete_team.html',context)
+
+
+
 #def profile_view(request):
 #
 #	if not request.user.is_authenticated:

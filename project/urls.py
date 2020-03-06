@@ -29,7 +29,8 @@ from proposition.views import (
 )
 from account.views import (
     MyTeamDetail,
-    DeleteMyPlayers
+    DeleteMyPlayers,
+    DeleteMyTeam
     )
 
 urlpatterns = [
@@ -60,5 +61,6 @@ urlpatterns = [
     path('team_list/', MyTeams, name='team_list' ),
     path('team/detail/<int:pk>/', MyTeamDetail, name='team_detail'),
     path('team/player/<int:pk>/delete/', DeleteMyPlayers, name='delete_player' ),
+    path('team/<int:pk>/delete/', DeleteMyTeam, name='delete_team'),
 #    path('match/new/', MatchCreateView.as_view(), name='match_create')
 ]
