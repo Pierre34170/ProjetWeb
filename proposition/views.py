@@ -337,13 +337,30 @@ def Reservation(request, pk):
 	if request.method=='POST':
 		reserve = Reserve(proposition=proposition, player=player)
 		reserve.save()
-		messages.success(request, f'Proposition accepted !')
 
-		return redirect('home')
+		return render(request, 'proposition/choose_team.html', context)
 
 	return render(request, 'proposition/reserve_confirm.html', context)
 
 #	return HttpResponseRedirect(reverse('confirmation', kwargs={'pk': proposition.id}))
+
+
+@login_required
+@user_passes_test(is_captain_check, login_url='home')
+def involveTeam(request, pk):
+	proposition = Proposition.objects.get(id=pk)
+	if request.method=='POST':
+		form = ConfirmationMatchForm(request.user, request.POST)
+		if form.is_valid():
+			instance = form.save()
+			instance.game = proposition
+			instance.save()
+			messages.success(request, f'Proposition accepted !')
+			return redirect('home')
+
+	else:
+		form = ConfirmationMatchForm(request.user)
+
 
 
 @login_required

@@ -107,6 +107,7 @@ def JoinTeam(request, pk):
 
 @login_required
 @user_passes_test(is_captain_check, login_url='home')
+
 def MyTeamDetail(request, pk):
 	team = Team.objects.get(id=pk)
 	myplayers = BelongToTeam.objects.filter(team=team)

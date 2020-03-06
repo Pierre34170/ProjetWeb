@@ -1,0 +1,17 @@
+{% extends "project/base.html" %}
+{% block content %}
+
+<div class="content-section">
+		<fieldset class="form-group">
+			<legend class="border-bottom mb-4">Choose your team</legend>
+		</fieldset>
+		<div class="form-group">
+			<form action="" method="POST">
+				{% csrf_token %}
+				{{form|crispy}}
+				<input class="btn btn-primary" type="submit" value="Validate">
+			</form>
+		</div>
+</div>
+
+{% endblock content %}
