@@ -1,5 +1,6 @@
 from django.db import models
-from account.models import Account, Team
+from account.models import Account
+from team.models import Team
 from django.utils import timezone
 from django.urls import reverse
 
@@ -15,7 +16,7 @@ class Match(models.Model):
 	def get_absolute_url(self):
 		return reverse('home')
 '''		
-
+'''
 class Training(models.Model):
 	date_training = models.DateField()
 	hour_training = models.TimeField()
@@ -27,7 +28,7 @@ class Training(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('training_detail', kwargs={'pk': self.pk})
-
+'''
 		
 '''
 class Stadium(models.Model):

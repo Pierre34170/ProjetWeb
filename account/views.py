@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+#from django.contrib.auth import login, authenticate
 from .forms import RegistrationForm, AccountUpdateForm
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
-from .filters import TeamFilter
-from .models import Team, Account, BelongToTeam
+from .models import Account
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
 
@@ -55,7 +54,8 @@ def profile_view(request):
 
 	return render(request, 'account/profile.html', context)
 	
-
+	
+'''
 
 @login_required
 def ResearchTeam(request):
@@ -100,7 +100,11 @@ def JoinTeam(request, pk):
 
 	return render(request, 'account/join_team.html', context)
 
+'''
 
+
+
+'''
 @login_required
 @user_passes_test(is_captain_check, login_url='home')
 
@@ -158,7 +162,7 @@ def DeleteMyTeam(request, pk):
 
 	return render(request, 'account/delete_team.html',context)
 
-
+'''
 
 #def profile_view(request):
 #

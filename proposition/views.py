@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .forms import OrganizeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import (
 	ListView, 
@@ -11,11 +10,11 @@ from django.views.generic import (
 	)
 
 from django.contrib import messages
-
 from django.utils import timezone
-from .models import Proposition, Training, Reserve, Play
-from account.models import Team, Account, BelongToTeam
-from .forms import ResearchMatchForm, SuggestTrainingForm, ConfirmationMatchForm
+from .models import Proposition, Reserve, Play
+from account.models import Account
+from team.models import Team, BelongToTeam
+from .forms import ResearchMatchForm, ConfirmationMatchForm, PropositionModelForm
 from django.contrib.auth.decorators import user_passes_test
 import datetime
 
@@ -52,13 +51,13 @@ def display_games_view(request):
 
 
 ''' gestion des propositions de matchs  '''
-
+'''
 class PropositionListView(LoginRequiredMixin, ListView):
 	model = Proposition
 #	temmplate_name = 'proposition/display_games.html'
 	context_object_name = 'propositions'
 	ordering = ['date_posted']
-
+'''
 
 
 '''	def display_propositions(self):
@@ -83,12 +82,15 @@ def DetailProposition(request, pk):
 
 
 class PropositionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-	model = Proposition
-	fields = ['title', 'date_match', 'hour_beggin', 'lieu_match', 'name_stadium', ]
+
+	template_name = 'proposition/proposition_form.html'
+	form_class = PropositionModelForm
 
 
 	def form_valid(self, form):
+
 		form.instance.author = self.request.user
+
 		return super().form_valid(form)
 
 	def test_func(self):
@@ -126,7 +128,7 @@ class PropositionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 
 ''' Gestion des entrainements '''
 
-
+'''
 class TrainingListView(LoginRequiredMixin, ListView):
 	model = Training
 	context_object_name = 'trainings'
@@ -179,12 +181,12 @@ class TrainingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 		if (self.request.user.is_captain):
 			return True
 		return False
-
+'''
 
 
 
 ''' Creer son equipe '''
-
+'''
 class TeamListView(ListView):
 	model = Team
 	context_object_name = 'teams'
@@ -217,7 +219,7 @@ class TeamDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 			return True
 		return False
 
-
+'''
 # creer son match avant de le proposer 
 
 '''
@@ -271,7 +273,7 @@ def ResearchMatch(request):
 
 
 # creer un entrainement avec seulement les équipes que j'ai creéé
-
+'''
 @login_required
 @user_passes_test(is_captain_check, login_url='home')
 def SuggestTraining(request):
@@ -287,7 +289,7 @@ def SuggestTraining(request):
 	context = {'form' : form}
 
 	return render(request, 'proposition/training_form.html', context)
-
+'''
 '''
 @login_required
 def SeeMyTrainings(request):
@@ -298,7 +300,7 @@ def SeeMyTrainings(request):
 		mytrainings=alltrainings.filter(team_training=request.)
 '''
 
-
+'''
 @login_required
 @user_passes_test(is_captain_check, login_url='home')
 def MyTeams(request):
@@ -308,7 +310,7 @@ def MyTeams(request):
 	context = {'teams':teams}
 
 	return render(request, 'account/team_list.html', context)
-
+'''
 
 '''
 class ReserveCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -397,7 +399,7 @@ def MyResponse(request):
 
 	return render(request, 'proposition/proposition_response.html', context)
 
-
+'''
 @login_required
 def MyTrainings(request):
 
@@ -426,7 +428,7 @@ def MyTrainings(request):
 			
 		context = {'total_trainings' : total_trainings}
 		return render(request, 'proposition/training_list.html', context)
-
+'''
 
 @login_required
 def DetailMatch(request, pk):

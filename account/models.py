@@ -114,6 +114,7 @@ class Profile(models.Model):
 			img.save(self.image.path)
 '''
 
+'''
 class Team (models.Model):
 	libelle_team = models.CharField(max_length=30, unique=True)
 	nb_players_max = models.PositiveIntegerField(null=True)
@@ -132,4 +133,4 @@ class BelongToTeam (models.Model):
 	team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True)
 	player = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
 
-
+'''

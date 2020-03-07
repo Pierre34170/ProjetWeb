@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from proposition.models import *
 from account.models import *
+from training.models import *
+from team.models import *
 import datetime
 
 def home(request):
@@ -52,3 +54,9 @@ def home(request):
 			return render(request, 'project/home.html', context)
 
 	return render(request, 'project/home.html')
+
+
+
+
+
+	

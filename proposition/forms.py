@@ -1,17 +1,37 @@
 from django import forms
-from .models import Proposition, Training, Play
-from account.models import Team
+from .models import Proposition, Play
+from team.models import Team
 import datetime
 import re
 
 
 
-
+'''
 class OrganizeForm(forms.ModelForm):
 	class Meta:
 		model = Proposition
 		fields = ('title', 'date_posted', 'date_match')
+'''
 
+class PropositionModelForm(forms.ModelForm):
+	class Meta:
+		model = Proposition
+		fields = ['title', 'date_match', 'hour_beggin', 'lieu_match', 'name_stadium', ]
+
+
+	def clean(self):
+		cleaned_data = super().clean()
+		print(cleaned_data)
+		date_match = cleaned_data.get("date_match")
+
+		pattern = '^[0-9]{2,4}-[0-9]{1,2}-[0-9]{1,2}$'
+		resultdate = re.match(pattern, str(date_match))
+
+		if resultdate:
+			if date_match < datetime.date.today():
+				raise forms.ValidationError('This date is already passed !')
+
+		return cleaned_data
 
 
 class ResearchMatchForm(forms.ModelForm):
@@ -36,8 +56,18 @@ class ResearchMatchForm(forms.ModelForm):
 		return cleaned_data
 
 
+class ConfirmationMatchForm(forms.ModelForm):
+	class Meta:
+		model = Play
+		fields = ['team']
+
+	def __init__(self, user,*args, **kwargs):
+		super(ConfirmationMatchForm, self).__init__(*args, **kwargs)
+		self.fields['team'].queryset = Team.objects.filter(creator=user)
 
 
+
+'''
 class SuggestTrainingForm(forms.ModelForm):
 #	teams=Team.objects.filter(Team.creator=='pierre34')
 #	team_training = forms.ModelChoiceField(queryset=teams)
@@ -50,15 +80,7 @@ class SuggestTrainingForm(forms.ModelForm):
 		super(SuggestTrainingForm, self).__init__(*args, **kwargs)
 		self.fields['team_training'].queryset = Team.objects.filter(creator=user)
 
+'''
 
-
-class ConfirmationMatchForm(forms.ModelForm):
-	class Meta:
-		model = Play
-		fields = ['team']
-
-	def __init__(self, user,*args, **kwargs):
-		super(ConfirmationMatchForm, self).__init__(*args, **kwargs)
-		self.fields['team'].queryset = Team.objects.filter(creator=user)
 
 
