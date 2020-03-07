@@ -30,17 +30,8 @@ body {
 	margin-top: 20px;
 }
 
-.see {
-  margin-top: 300px;
-}
-
-#see-matchs{
-
-  background-color: #F1C40F;
-}
-
-#see-trainings{
-  background-color: #7DCEA0;
+.boutons{
+  vertical-align: middle;
 }
 
 .button-accept{
