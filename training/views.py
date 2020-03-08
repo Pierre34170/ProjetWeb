@@ -39,22 +39,6 @@ class TrainingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 		return False
 
 
-'''
-class TrainingCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-
-	template_name = 'training/training_form.html'
-	form_class = TrainingModelForm
-
-	def form_valid(self, form):
-#		form.instance.team_training = self.request.user.team
-		return super().form_valid(form)
-
-	def test_func(self):
-		if self.request.user.is_captain:
-			return True
-		return False
-'''
-
 class TrainingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Training
 	fields = ['date_training', 'hour_training', 'type_training', 'team_training']
@@ -107,7 +91,8 @@ def MyTrainings(request):
 		trainings=Training.objects.all()
 		teams=Team.objects.filter(creator=request.user)
 		total_trainings1=trainings.filter(team_training__in=teams)
-		total_trainings=total_trainings1.filter(date_training__gte=datetime.date.today())
+		total_trainings2=total_trainings1.filter(date_training__gte=datetime.date.today())
+		total_trainings=total_trainings2.order_by('-date_training')
 
 		context = { 'total_trainings' : total_trainings }
 		return render(request, 'training/training_list.html', context)
@@ -123,8 +108,9 @@ def MyTrainings(request):
 
 		mytrainings=trainings.filter(team_training__in=mytrainingtab)
 
-		total_trainings=mytrainings.filter(date_training__gte=datetime.date.today())
-			
+		total_trainings1=mytrainings.filter(date_training__gte=datetime.date.today())
+		total_trainings=total_trainings1.order_by('date_training')
+
 		context = {'total_trainings' : total_trainings}
 		return render(request, 'training/training_list.html', context)
 

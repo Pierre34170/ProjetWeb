@@ -112,7 +112,6 @@ def ResearchTeam(request):
 
 	teams = Team.objects.exclude(libelle_team__in=myteamstab)
 
-#	team = teams.filter(libelle_team__ne=libelle_team)
 
 	myFilter = TeamFilter(request.GET, queryset=teams)
 	teams  = myFilter.qs

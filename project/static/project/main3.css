@@ -29,14 +29,7 @@ body {
 .button-match{
 	margin-top: 20px;
 }
-/*
-.boutons{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height : 100vh;
-}
-*/
+
 .button-accept{
   margin-right: 20px;
 }
