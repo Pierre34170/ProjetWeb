@@ -73,7 +73,7 @@ def SuggestTraining(request):
 		form = SuggestTrainingForm(request.user, request.POST)
 		if form.is_valid():
 			instance = form.save()
-			messages.success(request, f'Your Training have been add !')
+			messages.success(request, f'Your Training has been added !')
 			return redirect('home')
 	else : 
 		form = SuggestTrainingForm(request.user)

@@ -5,12 +5,13 @@
 	<h2>YOUR MATCHS</h2>
 </div>
 
+{% if myresponsestab %}
 {% for matchs in myresponsestab %}
 <article class="media content-section">
 	<img class="rounded-circle article-img" src="{{ matchs.author.image.url }}">
 	<div class="media-body">
 		<div class="article-metadata">
-			<a class="mr-2">capitain : {{ matchs.author }}</a>
+			<a class="mr-2">captain : {{ matchs.author }}</a>
 			<small class="text-muted">{{ matchs.date_posted|date:"F d, Y" }}</small>
 		</div>
 		<h2><a class="article-title" >{{ matchs.title }}</a></h2>
@@ -22,14 +23,19 @@
 		</p>
 		<div class="collapse" id="collapseExample">
 			<div class="card card-body">
-				<p class="article-content">Date du match : {{ matchs.date_match }}</p>
-				<p class="article-content">Heure : {{ matchs.hour_beggin }}</p>
-				<p class="article-content">Adresse : {{ matchs.lieu_match }}</p>
-				<p class="article-content">Adresse : {{ matchs.name_stadium }}</p>
+				<p class="article-content">Date of the match : {{ matchs.date_match }}</p>
+				<p class="article-content">Hour : {{ matchs.hour }}</p>
+				<p class="article-content">Address : {{ matchs.address_match }}</p>
+				<p class="article-content">Name of the stadium : {{ matchs.name_stadium }}</p>
 			</div>
 		</div>
 	</div>
 </article>
 {% endfor %}
+{% else %}
+<div class="content-section">
+	<h3>You haven't any matchs planned yet</h3>
+</div>
+{% endif %}
 
 {% endblock content %}

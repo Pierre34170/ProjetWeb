@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+{% if playerbelongtoteam %}
 {% for playerbelong in playerbelongtoteam %}
 <article class="media content-section">
 	<img class="rounded-circle article-img" src="{{ playerbelong.player.image.url }}">
@@ -24,4 +25,9 @@
 	</div>
 </article>
 {% endfor %}
+{% else %}
+<div class="content-section">
+	<h3>You haven't any players in this team yet</h3>
+</div>
+{% endif %}
 {% endblock content %}

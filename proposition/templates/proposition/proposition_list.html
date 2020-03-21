@@ -8,8 +8,8 @@
 			<input class="btn btn-primary" type="submit" value="Validate">
 	</form>
 </div>
-{% for proposition in propositions %}
 {% if propositions %}
+{% for proposition in propositions %}
 <article class="media content-section">
 	<img class="rounded-circle article-img" src="{{ proposition.author.image.url }}">
 	<div class="media-body">
@@ -19,13 +19,13 @@
 		</div>
 		<h2><a class="article-title" href="{% url 'proposition_detail' proposition.id %}">{{ proposition.title }}</a></h2>
 		<p class="article-content">Date of the Match : {{ proposition.date_match }}</p>
-		<p class="article-content">Hour : {{ proposition.hour_beggin }}</p>
+		<p class="article-content">Hour : {{ proposition.hour }}</p>
 	</div>
 </article>
+{% endfor %}
 {% else %}
 <div class="content-section">
 	<p> No Matchs</p>
 </div>
 {% endif %}
-{% endfor %}
 {% endblock content %}

@@ -6,15 +6,20 @@
 	<h2>Proposition Accepted : </h2>
 </div>
 
-
+{% if response %}
 {% for myresponse in response %}
 <article class="media content-section">
 	<div class="media-body">
 		<div class="article-metadata">
 			<small class="text-muted">{{ myresponse.date_reservation|date:"F d, Y" }}</small>
 		</div>
-		<h2><a class="article-title" href="{% url 'matchs_detail' myresponse.proposition.id %}">{{ myresponse.player.username }} has accepted your proposition : {{ myresponse.proposition.title }}</a></h2>
+		<h2><a class="article-title" href="{% url 'matchs_detail' myresponse.proposition.id %}">{{ myresponse.player.username }} accepted your proposition : {{ myresponse.proposition.title }}</a></h2>
 	</div>
 </article>
 {% endfor %}
+{% else %}
+<div class="content-section">
+	<p>You haven't any responses</p>
+</div>
+{% endif %}
 {% endblock content %}

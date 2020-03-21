@@ -1,6 +1,11 @@
 {% extends "project/base.html" %}
 {% block content %}
 
+<div class="content-section">
+	<h2>YOUR TRAININGS</h2>
+</div>
+
+{% if total_trainings %}
 {% for training in total_trainings %}
 <article class="media content-section">
 	<div class="media-body">
@@ -12,5 +17,9 @@
 	</div>
 </article>
 {% endfor %}
-
+{% else %}
+<div class="content-section">
+	<h3>You haven't any trainings planned yet</h3>
+</div>
+{% endif %}
 {% endblock content %}

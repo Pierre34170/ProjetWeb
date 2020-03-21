@@ -5,18 +5,13 @@ import datetime
 import re
 
 
-
-'''
-class OrganizeForm(forms.ModelForm):
-	class Meta:
-		model = Proposition
-		fields = ('title', 'date_posted', 'date_match')
-'''
-
 class PropositionModelForm(forms.ModelForm):
+	date_match = forms.DateField(widget=forms.TextInput({'placeholder': 'YYYY-MM-DD'}))
+	hour = forms.TimeField(widget=forms.TextInput({'placeholder': 'HH:MM:SS'}))
+	
 	class Meta:
 		model = Proposition
-		fields = ['title', 'date_match', 'hour_beggin', 'lieu_match', 'name_stadium', ]
+		fields = ['title', 'date_match', 'hour', 'address_match', 'name_stadium', ]
 
 
 	def clean(self):
@@ -65,22 +60,6 @@ class ConfirmationMatchForm(forms.ModelForm):
 		super(ConfirmationMatchForm, self).__init__(*args, **kwargs)
 		self.fields['team'].queryset = Team.objects.filter(creator=user)
 
-
-
-'''
-class SuggestTrainingForm(forms.ModelForm):
-#	teams=Team.objects.filter(Team.creator=='pierre34')
-#	team_training = forms.ModelChoiceField(queryset=teams)
-
-	class Meta:
-		model = Training
-		fields = ['date_training', 'hour_training', 'type_training', 'team_training']
-
-	def __init__(self, user,*args, **kwargs):
-		super(SuggestTrainingForm, self).__init__(*args, **kwargs)
-		self.fields['team_training'].queryset = Team.objects.filter(creator=user)
-
-'''
 
 
 

@@ -1,12 +1,13 @@
 {% extends "project/base.html" %}
 {% block content %}
 
+{% if teams %}
 {% for team in teams %}
 <article class="media content-section">
 	<div class="media-body">
 		<div class="row">
 			<div class="col-md-6">
-				<h2><a class="article-title" href="{% url 'team_detail' team.id %}">{{ team.libelle_team }}</a></h2>
+				<h2><a class="article-title" href="{% url 'team_detail' team.id %}">{{ team.name_team }}</a></h2>
 				<p class="article-content">Date of creation : {{ team.date_creation|date:"F d, Y" }}</p>
 			</div>
 			<div class="col-md-3"></div>
@@ -17,5 +18,9 @@
 	</div>
 </article>
 {% endfor %}
-
+{% else %}
+<div class="content-section">
+	<p>You haven't any teams</p>
+</div>
+{% endif %}
 {% endblock content %}

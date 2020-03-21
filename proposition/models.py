@@ -6,12 +6,12 @@ from django.urls import reverse
 
 
 class Proposition(models.Model):
-	title = models.CharField(max_length=300)
+	title = models.CharField(verbose_name="Title", max_length=300)
 	date_posted = models.DateTimeField(default=timezone.now)
-	date_match = models.DateField()
-	hour_beggin = models.TimeField()
-	lieu_match = models.CharField(max_length=300)
-	name_stadium = models.CharField(max_length=50)
+	date_match = models.DateField(verbose_name="Date")
+	hour = models.TimeField(verbose_name="Hour")
+	address_match = models.CharField(verbose_name="Address stadium", max_length=300)
+	name_stadium = models.CharField(verbose_name="Name stadium", max_length=50)
 	author = models.ForeignKey(Account, null = True, on_delete=models.CASCADE)
 
 	def __str__(self):

@@ -48,7 +48,7 @@ class PropositionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
 
 class PropositionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Proposition
-	fields = ['title', 'date_match', 'hour_beggin', 'lieu_match', 'name_stadium', ]
+	fields = ['title', 'date_match', 'hour', 'address_match', 'name_stadium', ]
 
 	def form_valid(self, form):
 		form.instance.author = self.request.user
@@ -165,7 +165,7 @@ def DetailMatch(request, pk):
 			instance = form.save()
 			instance.game = proposition
 			instance.save()
-
+			messages.success(request, f'Now, you can play !')
 			return redirect('proposition_response')
 	else:
 		form = ConfirmationMatchForm(request.user)

@@ -17,11 +17,11 @@ def is_captain_check(user):
 
 class TeamCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 	model = Team
-	fields = ['libelle_team', 'nb_players_max']
+	fields = ['name_team', 'number_players_max']
 
 	def form_valid(self, form):
 		form.instance.creator =  self.request.user
-		form.instance.nb_players = 0
+		form.instance.number_players = 0
 
 		return super().form_valid(form)
 
@@ -108,9 +108,9 @@ def ResearchTeam(request):
 	myteams = BelongToTeam.objects.filter(player=request.user)
 	myteamstab=[]
 	for i in myteams:
-		myteamstab.append(i.team.libelle_team)
+		myteamstab.append(i.team.name_team)
 
-	teams = Team.objects.exclude(libelle_team__in=myteamstab)
+	teams = Team.objects.exclude(name_team__in=myteamstab)
 
 
 	myFilter = TeamFilter(request.GET, queryset=teams)
@@ -131,8 +131,8 @@ def JoinTeam(request, pk):
 
 
 	if request.method=='POST':
-		if (team.nb_players < (team.nb_players_max)):
-			team.nb_players = team.nb_players +1
+		if (team.number_players < (team.number_players_max)):
+			team.number_players = team.number_players +1
 			team.save()
 			belongto = BelongToTeam(team=team, player=player)
 			belongto.save()

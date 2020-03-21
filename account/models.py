@@ -49,7 +49,7 @@ class Account(AbstractBaseUser):
 	email = models.EmailField(verbose_name="email", max_length=60, unique=True)
 	is_captain = models.BooleanField(default=False)
 	city = models.CharField(max_length=30)
-	numTel = models.CharField(max_length=10, unique=True)
+	numTel = models.CharField(verbose_name="phone", max_length=10, unique=True)
 	image = models.ImageField(default='default.jpg', upload_to='profile_pics')
 	date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
 	last_login = models.DateTimeField(verbose_name='last login', auto_now=True)

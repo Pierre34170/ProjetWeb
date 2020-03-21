@@ -7,8 +7,9 @@ import re
 
 
 class SuggestTrainingForm(forms.ModelForm):
-#	teams=Team.objects.filter(Team.creator=='pierre34')
-#	team_training = forms.ModelChoiceField(queryset=teams)
+
+	date_training = forms.DateField(widget=forms.TextInput({'placeholder': 'YYYY-MM-DD'}))
+	hour_training = forms.TimeField(widget=forms.TextInput({'placeholder': 'HH:MM:SS'}))
 
 	class Meta:
 		model = Training

@@ -12,9 +12,9 @@
 <article class="media content-section">
 	<div class="media-body">
 		<div class="article-metadata">
-			<a class="mr-2" href="#">capitain : {{ team.creator }}</a>
+			<a class="mr-2" href="#">captain : {{ team.creator }}</a>
 		</div>
-			<h3><a class="article-title" href="{% url 'join_team' team.id %}">{{ team.libelle_team }}</a></h3>
+			<h3><a class="article-title" href="{% url 'join_team' team.id %}">{{ team.name_team }}</a></h3>
 	</div>
 </article>
 {% endfor %}
