@@ -72,7 +72,7 @@ def DeleteMyPlayers(request, pk):
 	myteam = player.team
 
 	if request.method=="POST":
-		myteam.nb_players = myteam.nb_players-1
+		myteam.number_players = myteam.number_players-1
 		myteam.save() 
 		player.delete()
 		messages.success(request, f'Player deleted !')
@@ -121,7 +121,6 @@ def ResearchTeam(request):
 	return render(request, 'team/find_team.html', context)
 
 
-
 @login_required
 def JoinTeam(request, pk):
 	team = Team.objects.get(id=pk)
@@ -140,7 +139,7 @@ def JoinTeam(request, pk):
 
 			return redirect('home')
 		messages.success(request, f'Sorry this team is already complete')
-		return render(request,'account/join_team.html', context)
+		return render(request,'team/join_team.html', context)
 
 	return render(request, 'team/join_team.html', context)
 
